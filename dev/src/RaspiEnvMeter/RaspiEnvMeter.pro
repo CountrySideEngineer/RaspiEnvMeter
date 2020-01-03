@@ -17,10 +17,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    envmeter.cpp
+    envmeter.cpp \
+    model/cdatetime.cpp \
+    model/cdatetimemodel.cpp \
+    model/craspienvmetermodelbase.cpp
 
 HEADERS += \
-    envmeter.h
+    envmeter.h \
+    model/cdatetime.h \
+    model/cdatetimemodel.h \
+    model/craspienvmetermodelbase.h
 
 FORMS += \
     envmeter.ui
