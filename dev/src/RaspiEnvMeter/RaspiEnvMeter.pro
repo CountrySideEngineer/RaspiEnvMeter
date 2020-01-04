@@ -20,13 +20,15 @@ SOURCES += \
     envmeter.cpp \
     model/cdatetime.cpp \
     model/cdatetimemodel.cpp \
-    model/craspienvmetermodelbase.cpp
+    model/craspienvmetermodelbase.cpp \
+    view/craspienvmeterview.cpp
 
 HEADERS += \
     envmeter.h \
     model/cdatetime.h \
     model/cdatetimemodel.h \
-    model/craspienvmetermodelbase.h
+    model/craspienvmetermodelbase.h \
+    view/craspienvmeterview.h
 
 FORMS += \
     envmeter.ui
