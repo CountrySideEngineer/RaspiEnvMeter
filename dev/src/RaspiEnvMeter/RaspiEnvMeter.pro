@@ -21,6 +21,7 @@ SOURCES += \
     model/cdatetime.cpp \
     model/cdatetimemodel.cpp \
     model/craspienvmetermodelbase.cpp \
+    view/craspienvmetertimeview.cpp \
     view/craspienvmeterview.cpp
 
 HEADERS += \
@@ -28,10 +29,16 @@ HEADERS += \
     model/cdatetime.h \
     model/cdatetimemodel.h \
     model/craspienvmetermodelbase.h \
+    view/craspienvmetertimeview.h \
     view/craspienvmeterview.h
 
 FORMS += \
     envmeter.ui
+
+INCLUDEPATH += \
+    ./model \
+    ./view
+
 
 TRANSLATIONS += \
     RaspiEnvMeter_ja_JP.ts

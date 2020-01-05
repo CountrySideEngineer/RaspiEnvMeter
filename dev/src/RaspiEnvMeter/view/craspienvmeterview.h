@@ -7,6 +7,7 @@
 
 class CRaspiEnvMeterView : public QAbstractItemView
 {
+    Q_OBJECT
 public:
     explicit CRaspiEnvMeterView(QWidget* parent = nullptr);
 
