@@ -17,13 +17,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    envmeter.cpp
+    envmeter.cpp \
+    model/cdatetime.cpp \
+    model/cdatetimemodel.cpp \
+    model/craspienvmetermodelbase.cpp \
+    view/craspienvmetertimeview.cpp \
+    view/craspienvmeterview.cpp
 
 HEADERS += \
-    envmeter.h
+    envmeter.h \
+    model/cdatetime.h \
+    model/cdatetimemodel.h \
+    model/craspienvmetermodelbase.h \
+    view/craspienvmetertimeview.h \
+    view/craspienvmeterview.h
 
 FORMS += \
     envmeter.ui
+
+INCLUDEPATH += \
+    ./model \
+    ./view
+
 
 TRANSLATIONS += \
     RaspiEnvMeter_ja_JP.ts
