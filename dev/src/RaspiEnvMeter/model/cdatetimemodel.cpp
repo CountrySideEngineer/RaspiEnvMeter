@@ -30,7 +30,7 @@ void CDateTimeModel::Update()
     auto model = new CDateTime();
     CRaspiEnvMeterModelBase::Update(DATE_TIME_MODEL_ROW_INDEX_HOUR_OF_DAY, 0, model->GetHour());
     CRaspiEnvMeterModelBase::Update(DATE_TIME_MODEL_ROW_INDEX_MINUTE_OF_DAY, 0, model->GetMinute());
-    CRaspiEnvMeterModelBase::Update(DATE_TIME_MODEL_ROW_INDEX_SECOND_OF_MINUTE, 0, model->GetMinute());
+    CRaspiEnvMeterModelBase::Update(DATE_TIME_MODEL_ROW_INDEX_SECOND_OF_MINUTE, 0, model->GetSecond());
     CRaspiEnvMeterModelBase::Update(DATE_TIME_MODEL_ROW_INDEX_MONTH_OF_YEAR, 0, model->GetMonth());
     CRaspiEnvMeterModelBase::Update(DATE_TIME_MODEL_ROW_INDEX_DAY_OF_MONTH, 0, model->GetDayOfMonth());
 }
