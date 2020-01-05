@@ -7,6 +7,10 @@ class CRaspiEnvMeterTimeView : public CRaspiEnvMeterView
 {
 public:
     explicit CRaspiEnvMeterTimeView(QWidget* parent = nullptr);
+
+protected:
+    void resizeEvent(QResizeEvent* event);
+
 };
 
 #endif // CRASPIENVMETERTIMEVIEW_H

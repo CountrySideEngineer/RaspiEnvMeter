@@ -1,11 +1,34 @@
 #include "envmeter.h"
 #include "ui_envmeter.h"
+#include <QDebug>
+#include <QTimer>
 
 EnvMeter::EnvMeter(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::EnvMeter)
+    , timer_(new QTimer(this))
 {
-    ui->setupUi(this);
+    this->ui->setupUi(this);
+
+    this->ui->TimeHourDisplay->SetMoldelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_HOUR_OF_DAY);
+    this->ui->TimeMinuteDisplay->SetMoldelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_MINUTE_OF_HOUR);
+    this->ui->TimeSecondDisplay->SetMoldelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_SECOND_OF_MINUTE);
+    this->ui->DateMonthDisplay->SetMoldelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_MONTH_OF_YEAR);
+    this->ui->DateDayDisplay->SetMoldelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_DAY_OF_MONTH);
+
+    this->date_time_model_ = new CDateTimeModel(this);
+    this->ui->TimeHourDisplay->setModel(this->date_time_model_);
+    this->ui->TimeMinuteDisplay->setModel(this->date_time_model_);
+    this->ui->TimeSecondDisplay->setModel(this->date_time_model_);
+    this->ui->DateMonthDisplay->setModel(this->date_time_model_);
+    this->ui->DateDayDisplay->setModel(this->date_time_model_);
+
+    //@Todo:Add code to change view size.
+    //Start timer.
+    this->timer_->setInterval(100);
+    this->timer_->setSingleShot(false);
+    connect(this->timer_, SIGNAL(timeout()), this, SLOT(onTimerDispatch()));
+    this->timer_->start();
 }
 
 EnvMeter::~EnvMeter()
@@ -13,3 +36,12 @@ EnvMeter::~EnvMeter()
     delete ui;
 }
 
+/**
+ * @brief Event handler of Qt time dispatch.
+ */
+void EnvMeter::onTimerDispatch()
+{
+    qDebug() << tr("EnvMeter::onTimerDispatch() called");
+
+    this->date_time_model_->Update();
+}

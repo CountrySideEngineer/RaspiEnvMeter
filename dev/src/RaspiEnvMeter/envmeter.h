@@ -2,6 +2,7 @@
 #define ENVMETER_H
 
 #include <QMainWindow>
+#include "model/cdatetimemodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class EnvMeter; }
@@ -15,7 +16,13 @@ public:
     EnvMeter(QWidget *parent = nullptr);
     ~EnvMeter();
 
+protected slots:
+    void onTimerDispatch();
+
 private:
     Ui::EnvMeter *ui;
+
+    QTimer* timer_;
+    CDateTimeModel* date_time_model_;
 };
 #endif // ENVMETER_H
