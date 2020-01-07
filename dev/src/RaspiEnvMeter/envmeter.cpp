@@ -10,6 +10,7 @@ EnvMeter::EnvMeter(QWidget *parent)
 {
     this->ui->setupUi(this);
 
+    this->ui->AmPmDisplay->SetMoldelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_AMPM_DISPLAY);
     this->ui->TimeHourDisplay->SetMoldelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_HOUR_OF_DAY);
     this->ui->TimeMinuteDisplay->SetMoldelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_MINUTE_OF_HOUR);
     this->ui->TimeSecondDisplay->SetMoldelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_SECOND_OF_MINUTE);
@@ -17,6 +18,7 @@ EnvMeter::EnvMeter(QWidget *parent)
     this->ui->DateDayDisplay->SetMoldelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_DAY_OF_MONTH);
 
     this->date_time_model_ = new CDateTimeModel(this);
+    this->ui->AmPmDisplay->setModel(this->date_time_model_);
     this->ui->TimeHourDisplay->setModel(this->date_time_model_);
     this->ui->TimeMinuteDisplay->setModel(this->date_time_model_);
     this->ui->TimeSecondDisplay->setModel(this->date_time_model_);
@@ -33,6 +35,11 @@ EnvMeter::EnvMeter(QWidget *parent)
 
 EnvMeter::~EnvMeter()
 {
+    delete this->date_time_model_;
+
+    this->timer_->stop();
+    delete this->timer_;
+
     delete ui;
 }
 
@@ -41,7 +48,5 @@ EnvMeter::~EnvMeter()
  */
 void EnvMeter::onTimerDispatch()
 {
-    qDebug() << tr("EnvMeter::onTimerDispatch() called");
-
     this->date_time_model_->Update();
 }
