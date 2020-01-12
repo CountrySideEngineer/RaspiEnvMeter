@@ -5,9 +5,8 @@
 #include <QObject>
 #include <QtDebug>
 #include "pigpio/pigpio.h"
-#include "apart.h"
-#include "cgpio.h"
-
+#include "model/apart.h"
+#include "model/cgpio.h"
 
 /*
  * Timer macro used in time configuration.
@@ -523,6 +522,20 @@ int CGpio::SpiRead(uint8_t ce, APart* part) {
 }
 
 /**
+ * @brief CGpio::SpiRead    Receive data from slave device via SPI communication.
+ * @param data      Pointer to buffer to store data receive from slave device.
+ * @param data              Pointer to buffer to store data sent from slave device.
+ * @param dataSize          The size of buffer to sotre data.
+ * @return Size of receive data in byte.
+ */
+int CGpio::SpiRead(uint8_t *data, uint dataSize)
+{
+    return spiRead(static_cast<unsigned int>(this->mSpiHandle),
+                   reinterpret_cast<char *>(data),
+                   dataSize);
+}
+
+/**
  * @brief CGpio::SpiWrite   Send data to slave device via SPI communication.
  * @param ce                Chip sElect No.
  * @param data              Pointer to buffer which stores the datas to send by SPI communication.
@@ -556,6 +569,19 @@ int CGpio::SpiWrite(uint8_t ce, uint8_t *data, uint dataSize)
  */
 int CGpio::SpiWrite(uint8_t ce, APart* part) {
     return this->SpiWrite(ce, part->GetBuffer(), part->GetBufferSize());
+}
+
+/**
+ * @brief CGpio::SpiWrite   Send data to slave device via SPI communication.
+ * @param data              Pointer to buffer which stores the datas to send by SPI communication.
+ * @param dataSize          The data size to send.
+ * @return  Size of sent data.
+ */
+int CGpio::SpiWrite(uint8_t *data, uint dataSize)
+{
+    return spiWrite(static_cast<unsigned int>(this->mSpiHandle),
+                    reinterpret_cast<char*>(data),
+                    dataSize);
 }
 
 /**
@@ -641,6 +667,11 @@ int CGpio::GpioRead(uint8_t pin, uint8_t *level)
     }
 
     return readResult;
+}
+
+int CGpio::GpioSleep(const uint mode, const int second, const int micro_sec)
+{
+    return  gpioSleep(mode, second, micro_sec);
 }
 
 /**

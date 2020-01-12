@@ -81,6 +81,7 @@ public:
             SPI_CLOCK_250K = 250 * 1000,
             SPI_CLOCK_500K = 500 * 1000,
             SPI_CLOCK_1M = 1 * 1000 * 1000,
+            SPI_CLOCK_4M = 4 * 1000 * 1000,
             SPI_CLOCK_10M = 10 * 1000 * 1000,
         } SPI_CLOCK;
         /*
@@ -164,8 +165,13 @@ public:
     int SpiWrite(uint8_t ce, uint8_t *data, uint dataSize);
     int SpiRead(uint8_t ce, APart* part);
     int SpiWrite(uint8_t ce, APart* part);
+    int SpiRead(uint8_t *data, uint dataSize);
+    int SpiWrite(uint8_t *data, uint dataSize);
+
     int GpioWrite(uint8_t pin, uint8_t level);
     int GpioRead(uint8_t pin, uint8_t* level);
+    int GpioSleep(const uint mode, const int second, const int micro_sec);
+
 
     bool GetInCritical() const { return this->mInCritical; }
     uint8_t GetInterruptPin() const { return this->mInterruptPin; }

@@ -18,17 +18,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     envmeter.cpp \
+    model/adevicebase.cpp \
+    model/apart.cpp \
     model/cdatetime.cpp \
     model/cdatetimemodel.cpp \
+    model/cmpl115a1device.cpp \
     model/craspienvmetermodelbase.cpp \
+    model/cgpio.cpp \
+    util/util.cpp \
     view/craspienvmetertimeview.cpp \
     view/craspienvmeterview.cpp
 
 HEADERS += \
     envmeter.h \
+    model/adevicebase.h \
+    model/apart.h \
     model/cdatetime.h \
     model/cdatetimemodel.h \
+    model/cmpl115a1device.h \
     model/craspienvmetermodelbase.h \
+    model/gpio_pin_layout.h \
+    model/cgpio.h \
+    util/util.h \
     view/craspienvmetertimeview.h \
     view/craspienvmeterview.h
 
@@ -37,13 +48,17 @@ FORMS += \
 
 INCLUDEPATH += \
     ./model \
-    ./view
-
+    ./view \
+    ./lib/include
 
 TRANSLATIONS += \
     RaspiEnvMeter_ja_JP.ts
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
+else: linux: {
+    target.path = /opt/$${TARGET}/bin
+    LIBS += -lpthread \
+            -lpigpio
+}
 else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
