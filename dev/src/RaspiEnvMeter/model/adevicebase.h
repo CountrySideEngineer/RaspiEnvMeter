@@ -13,7 +13,13 @@ public:
 
     virtual uint8_t* GetBuffer() { return data_buffer_; }
     virtual uint32_t GetBufferSize() { return data_buffer_size_; }
+
+    virtual int GetDecimalPart() { return  this->decimal_part_; }
+    virtual int GetIntegerPart() { return this->integer_part_; }
+
     virtual void ShowBuffer();
+    virtual float GetFloat() { return 0.0; }
+
 
 protected:
     virtual void InitBuffer();

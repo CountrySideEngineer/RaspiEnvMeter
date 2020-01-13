@@ -11,12 +11,13 @@ class CRaspiEnvMeterView : public QAbstractItemView
 
 public:
     explicit CRaspiEnvMeterView(QWidget* parent = nullptr);
+    virtual ~CRaspiEnvMeterView() override;
 
     QRect visualRect(const QModelIndex &index) const override;
     void scrollTo(const QModelIndex &index, ScrollHint hint) override;
     QModelIndex indexAt(const QPoint &point) const override;
 
-    void SetMoldelRowIndex(int value) { this->model_row_index_ = value; }
+    void SetModelRowIndex(int value) { this->model_row_index_ = value; }
     int GetModelrowIndex() { return this->model_row_index_; }
 
 protected slots:

@@ -9,7 +9,7 @@ public:
     explicit CRaspiEnvMeterTimeView(QWidget* parent = nullptr);
 
 protected:
-    void resizeEvent(QResizeEvent* event);
+    void resizeEvent(QResizeEvent* event) override;
 
 };
 

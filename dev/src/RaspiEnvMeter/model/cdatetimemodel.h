@@ -4,6 +4,8 @@
 #include <QObject>
 #include "craspienvmetermodelbase.h"
 #include <qabstractitemmodel.h>
+#include "adevicebase.h"
+#include "cmpl115a1device.h"
 
 class CDateTimeModel : public CRaspiEnvMeterModelBase
 {
@@ -28,9 +30,6 @@ public:
     int rowCount(const QModelIndex &parent) const override;
 
     void Update() override;
-
-protected:
-
 };
 
 #endif // CDATETIMEMODEL_H

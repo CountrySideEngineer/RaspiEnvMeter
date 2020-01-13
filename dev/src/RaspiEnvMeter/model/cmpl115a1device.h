@@ -6,15 +6,14 @@ class CMPL115A1Device : public ADeviceBase
 {
 public:
     CMPL115A1Device();
-    virtual ~CMPL115A1Device();
+    virtual ~CMPL115A1Device() override;
 
-    virtual void Update(int32_t /* State */);
-    virtual void Update();
+    virtual void Update(int32_t /* State */) override;
+    virtual void Update() override;
     virtual void UpdateCoeff();
-    virtual void Initialize();
+    virtual void Initialize() override;
 
-    virtual int GetDecimalPart() { return this->decimal_part_; }
-    virtual int GetIntegerPart() { return this->integer_part_; }
+    virtual float GetFloat() override { return this->press_; }
 
 protected:
     virtual void StartSequence();

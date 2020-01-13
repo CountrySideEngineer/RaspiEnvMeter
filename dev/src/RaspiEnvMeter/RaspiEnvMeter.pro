@@ -23,11 +23,13 @@ SOURCES += \
     model/cdatetime.cpp \
     model/cdatetimemodel.cpp \
     model/cmpl115a1device.cpp \
+    model/cpressuremodel.cpp \
     model/craspienvmetermodelbase.cpp \
     model/cgpio.cpp \
     util/util.cpp \
     view/craspienvmetertimeview.cpp \
-    view/craspienvmeterview.cpp
+    view/craspienvmeterview.cpp \
+    view/craspienvpressview.cpp
 
 HEADERS += \
     envmeter.h \
@@ -36,12 +38,14 @@ HEADERS += \
     model/cdatetime.h \
     model/cdatetimemodel.h \
     model/cmpl115a1device.h \
+    model/cpressuremodel.h \
     model/craspienvmetermodelbase.h \
     model/gpio_pin_layout.h \
     model/cgpio.h \
     util/util.h \
     view/craspienvmetertimeview.h \
-    view/craspienvmeterview.h
+    view/craspienvmeterview.h \
+    view/craspienvpressview.h
 
 FORMS += \
     envmeter.ui

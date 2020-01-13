@@ -25,6 +25,8 @@ public:
     }
 
     static float Buff2Float(const uint8_t* buffer, int msb_index, int lsb_index, float lsb, uint16_t mask = 0xFFFF);
+    static float kPaTohPa(float kPa) { return kPa * 10; }
+    static int float2int(float value) { return static_cast<int>(value); }
 };
 
 #endif // UTIL_H
