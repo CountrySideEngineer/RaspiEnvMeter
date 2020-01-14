@@ -23,5 +23,5 @@ void CDateTime::Update()
 
     QDate date = dateTime.date();
     this->month_ = date.month();
-    this->dayofMonth_ = date.daysInMonth();
+    this->dayofMonth_ = date.day();
 }
