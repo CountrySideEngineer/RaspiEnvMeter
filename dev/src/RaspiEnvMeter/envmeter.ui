@@ -356,36 +356,6 @@
           <property name="spacing">
            <number>5</number>
           </property>
-          <item row="1" column="0" rowspan="3">
-           <widget class="QLabel" name="EnvTempDecPartDisplay">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>61</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>32</pointsize>
-             </font>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Box</enum>
-            </property>
-            <property name="text">
-             <string>12</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="1" rowspan="2">
            <widget class="QLabel" name="EnvTempDotDisplay">
             <property name="sizePolicy">
@@ -422,7 +392,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="2" rowspan="2" colspan="3">
+          <item row="2" column="2" rowspan="2" colspan="2">
            <widget class="QLabel" name="EnvTempIntPartDisplay">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -443,7 +413,37 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1" colspan="4">
+          <item row="2" column="0" rowspan="2">
+           <widget class="QLabel" name="EnvTempDecPartDisplay">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>61</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>32</pointsize>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="text">
+             <string>12</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="4">
            <widget class="QLabel" name="EnvTempUnitDisplay">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -523,7 +523,13 @@
            </widget>
           </item>
           <item>
-           <widget class="CRaspiEnvMeterTimeView" name="PressDisplay" native="true"/>
+           <widget class="CRaspiEnvMeterTimeView" name="PressDisplay" native="true">
+            <property name="font">
+             <font>
+              <pointsize>18</pointsize>
+             </font>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
