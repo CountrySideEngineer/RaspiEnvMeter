@@ -85,7 +85,7 @@ void CMPL115A1Device::Initialize()
 void CMPL115A1Device::StartSequence()
 {
     CGpio* instance = CGpio::GetInstance();
-    instance->GpioWrite(this->GetOutputPin(), PI_LOW);
+    instance->GpioWrite(SPI_0_CE0_N, PI_LOW);
     instance->GpioSleep(0, 0, 3 * 1000);
 }
 
@@ -95,7 +95,7 @@ void CMPL115A1Device::StartSequence()
 void CMPL115A1Device::StopSequence()
 {
     CGpio* instance = CGpio::GetInstance();
-    instance->GpioWrite(this->GetOutputPin(), PI_HIGH);
+    instance->GpioWrite(SPI_0_CE0_N, PI_HIGH);
 }
 
 /**

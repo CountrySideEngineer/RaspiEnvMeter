@@ -55,4 +55,5 @@ EnvMeter::~EnvMeter()
 void EnvMeter::onTimerDispatch()
 {
     this->date_time_model_->Update();
+    this->pressure_model_->Update();
 }

@@ -43,6 +43,14 @@ APart::APart(uint8_t Pin, PART_PIN_DIRECTION PinDirection, uint32_t ChatteringTi
     this->mPinDirection = PinDirection;
 }
 
+/**
+ * @brief Constructor with argumetn to initialize GPIO pin number, both input and output and configure
+ *        time to handle chattering.
+ * @param InputPin  GPIO pin number used as input.
+ * @param OutputPin GPIO pin number used as output.
+ * @param ChatterginTime    Time to wait for chattering finishes.
+ * @param PeriodicTime      Unnnn....
+ */
 APart::APart(uint8_t InputPin, uint8_t OutputPin, uint32_t ChatterginTime, uint32_t PeriodicTime)
     : mInputPin(InputPin)
     , mOutputPin(OutputPin)
@@ -93,14 +101,11 @@ string APart::ToString()
  */
 uint8_t APart::GetInputPin()
 {
-    uint8_t pin;
-
     if (PART_PIN_DIRECTION_INPUT & this->mPinDirection) {
-        pin = this->mInputPin;
+        return  this->mInputPin;
     } else {
         throw logic_error("Pin mode is not input");
     }
-    return pin;
 }
 
 /**
@@ -110,11 +115,8 @@ uint8_t APart::GetInputPin()
  */
 void APart::SetInputPin(uint8_t Pin)
 {
-    if (PART_PIN_DIRECTION_INPUT & this->mPinDirection) {
-        this->mInputPin = Pin;
-    } else {
-        throw logic_error("Pin mode is not input");
-    }
+    this->mInputPin = Pin;
+    this->mPinDirection = PART_PIN_DIRECTION_INPUT;
 }
 
 /**
@@ -124,14 +126,11 @@ void APart::SetInputPin(uint8_t Pin)
  */
 uint8_t APart::GetOutputPin()
 {
-    uint8_t pin;
-
     if (PART_PIN_DIRECTION_OUTPUT & this->mPinDirection) {
-        pin = this->mOutputPin;
+        return this->mOutputPin;
     } else {
-        throw logic_error("Pin mode is not output");
+        throw logic_error("uint8_t APart::GetOutputPin() : Pin mode is not output");
     }
-    return pin;
 }
 
 /**
@@ -141,9 +140,6 @@ uint8_t APart::GetOutputPin()
  */
 void APart::SetOutputPin(uint8_t Pin)
 {
-    if (PART_PIN_DIRECTION_OUTPUT & this->mPinDirection) {
-        this->mOutputPin = Pin;
-    } else {
-        throw logic_error("Pin mode is not output");
-    }
+    this->mOutputPin = Pin;
+    this->mPinDirection = PART_PIN_DIRECTION_OUTPUT;
 }
