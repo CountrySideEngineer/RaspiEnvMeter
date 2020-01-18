@@ -4,11 +4,13 @@
 #include <QTimer>
 #include "model/cdatetimemodel.h"
 #include "model/cpressuremodel.h"
+#include "util/util.h"
 
 EnvMeter::EnvMeter(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::EnvMeter)
-    , timer_(new QTimer(this))
+    , timer_100ms_(new QTimer(this))
+    , timer_10sec_(new QTimer(this))
 {
     this->ui->setupUi(this);
 
@@ -32,19 +34,30 @@ EnvMeter::EnvMeter(QWidget *parent)
     this->ui->PressDisplay->setModel(this->pressure_model_);
 
     //@Todo:Add code to change view size.
+
+    //Setup timer dispatch each 100msec.
+    this->timer_100ms_->setInterval(100);
+    this->timer_100ms_->setSingleShot(false);
+    connect(this->timer_100ms_, SIGNAL(timeout()), this, SLOT(onTimerDispatch_100msec()));
+
+    this->timer_10sec_->setInterval(10 * 1000); //10 second.
+    this->timer_10sec_->setSingleShot(false);
+    connect(this->timer_10sec_, SIGNAL(timeout()), this, SLOT(onTimerDispatch_10sec()));
+
     //Start timer.
-    this->timer_->setInterval(100);
-    this->timer_->setSingleShot(false);
-    connect(this->timer_, SIGNAL(timeout()), this, SLOT(onTimerDispatch()));
-    this->timer_->start();
+    this->timer_100ms_->start();
+    this->timer_10sec_->start();
 }
 
 EnvMeter::~EnvMeter()
 {
     delete this->date_time_model_;
 
-    this->timer_->stop();
-    delete this->timer_;
+    this->timer_100ms_->stop();
+    Util::SAFE_RELEASE_DATA(&(this->timer_100ms_));
+
+    this->timer_10sec_->stop();
+    Util::SAFE_RELEASE_DATA(&(this->timer_10sec_));
 
     delete ui;
 }
@@ -52,8 +65,16 @@ EnvMeter::~EnvMeter()
 /**
  * @brief Event handler of Qt time dispatch.
  */
-void EnvMeter::onTimerDispatch()
+void EnvMeter::onTimerDispatch_100msec()
 {
     this->date_time_model_->Update();
+}
+
+/**
+ * @brief Event handler of Qt time dispatch.
+ */
+void EnvMeter::onTimerDispatch_10sec()
+{
     this->pressure_model_->Update();
 }
+

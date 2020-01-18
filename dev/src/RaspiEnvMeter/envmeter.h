@@ -18,12 +18,14 @@ public:
     ~EnvMeter();
 
 protected slots:
-    void onTimerDispatch();
+    void onTimerDispatch_100msec();
+    void onTimerDispatch_10sec();
 
 private:
     Ui::EnvMeter *ui;
 
-    QTimer* timer_;
+    QTimer* timer_100ms_;
+    QTimer* timer_10sec_;
     CDateTimeModel* date_time_model_;
     CPressureModel* pressure_model_;
 };
