@@ -27,7 +27,7 @@ protected:
 protected:
 
     uint8_t*    data_buffer_;
-    uint32_t     data_buffer_size_;
+    uint32_t    data_buffer_size_;
     int decimal_part_;
     int integer_part_;
 };

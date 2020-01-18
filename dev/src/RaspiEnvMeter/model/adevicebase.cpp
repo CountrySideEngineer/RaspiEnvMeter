@@ -39,6 +39,7 @@ void ADeviceBase::ShowBuffer()
         }
         printf("0x%02x", this->data_buffer_[index]);
     }
+    printf("\r\n");
 }
 
 /**
