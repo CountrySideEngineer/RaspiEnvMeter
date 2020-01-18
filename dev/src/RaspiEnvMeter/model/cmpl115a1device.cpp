@@ -35,7 +35,11 @@ CMPL115A1Device::CMPL115A1Device()
 {
     uint32_t buff_size = 0;
 
-    if (DATA_BUFF_INDEX_MAX < COEFF_BUFF_INDEX_MAX) {
+    //Avoid warning comparing ENUM.
+    uint32_t data_buff_index_max = DATA_BUFF_INDEX_MAX;
+    uint32_t coeff_buff_index_max = COEFF_BUFF_INDEX_MAX;
+
+    if (data_buff_index_max < coeff_buff_index_max) {
         buff_size = COEFF_BUFF_INDEX_MAX;
     } else {
         /*
@@ -45,6 +49,7 @@ CMPL115A1Device::CMPL115A1Device()
          */
         buff_size = DATA_BUFF_INDEX_MAX;
     }
+    this->data_buffer_size_ = buff_size;
     this->data_buffer_ = new uint8_t[buff_size];
     this->InitBuffer();
     this->Initialize();
@@ -110,6 +115,8 @@ void CMPL115A1Device::SendAndRecvCommand(const uint8_t send_data, uint8_t* recv_
 
     instance->SpiWrite(const_cast<uint8_t*>((&send_data)), 1);
     instance->SpiRead(recv_data, 1);
+
+    printf("Snd = 0x%02x Rcv = 0x%02x\r\n", send_data, *recv_data);
 }
 
 /**
@@ -136,6 +143,8 @@ void CMPL115A1Device::ReadSensorData()
         this->SendAndRecvCommand(CMPL115A1Device::DATA_READ_COMMAND_SEQUENCE[index], &(this->data_buffer_[index]));
     }
     this->StopSequence();
+
+    this->ShowBuffer();
 }
 
 /**
@@ -169,6 +178,11 @@ void CMPL115A1Device::CalcCoeff()
     this->coefficient_c12_ = Util::Buff2Float(
                 this->data_buffer_,
                 COEFF_BUFF_INDEX_C12_MSB, COEFF_BUFF_INDEX_C12_LSB, LSB_C12);
+
+    printf("coefficient_a0_= %.3f\r\n", (double)this->coefficient_a0_);
+    printf("coefficient_b1_= %.3f\r\n", (double)this->coefficient_b1_);
+    printf("coefficient_b2_= %.3f\r\n", (double)this->coefficient_b2_);
+    printf("coefficient_c12_= %.3f\r\n", (double)this->coefficient_c12_);
 
 }
 
@@ -207,6 +221,8 @@ void CMPL115A1Device::UpdateCoeff()
  */
 void CMPL115A1Device::Update(int32_t /* State */)
 {
+    printf("void CMPL115A1Device::Update(int32_t) called\r\n");
+
     this->Update();
 }
 
@@ -215,7 +231,10 @@ void CMPL115A1Device::Update(int32_t /* State */)
  */
 void CMPL115A1Device::Update(void)
 {
-    this->ReadSensorData();
-    this->CalcPress();
+    printf("void CMPL115A1Device::Update(void) called\r\n");
 
+    this->SendStartReadingComand();
+    this->ReadSensorData();
+
+    this->CalcPress();
 }

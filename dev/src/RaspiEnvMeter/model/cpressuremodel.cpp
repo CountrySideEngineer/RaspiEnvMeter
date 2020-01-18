@@ -40,11 +40,14 @@ int CPressureModel::rowCount(const QModelIndex &parent) const
  */
 void CPressureModel::Update()
 {
+    printf("void CPressureModel::Update() called\r\n");
+
     assert(nullptr != this->device_);
 
     this->device_->Update();
     float press_kPa = this->device_->GetFloat();
     float press_hPa = Util::kPaTohPa(press_kPa);
     int press = Util::float2int(press_hPa);
+
     CRaspiEnvMeterModelBase::Update(PRESSURE_MODE_ROW_INDEX_PRESSURE, 0, press);
 }
