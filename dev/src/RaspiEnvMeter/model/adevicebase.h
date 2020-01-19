@@ -22,6 +22,7 @@ public:
 
 
 protected:
+    virtual void InitializeSpi();
     virtual void InitBuffer();
 
 protected:
