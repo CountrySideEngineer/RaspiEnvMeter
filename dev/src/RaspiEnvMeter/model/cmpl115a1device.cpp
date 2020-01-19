@@ -64,26 +64,6 @@ CMPL115A1Device::~CMPL115A1Device()
 }
 
 /**
- * @brief Initialize mode of GPIO pin.
- */
-void CMPL115A1Device::Initialize()
-{
-    CGpio* instance = CGpio::GetInstance();
-    instance->SetMode(SPI_0_CE0_N, CGpio::GPIO_PIN_DIRECTION::GPIO_PIN_DIRECTION_OUTPUT);
-    instance->SetMode(SPI_0_CE1_N, CGpio::GPIO_PIN_DIRECTION::GPIO_PIN_DIRECTION_OUTPUT);
-
-    this->SetOutputPin(SPI_0_CE0_N);
-    this->SetOutputPin(SPI_0_CE1_N);
-
-    CGpio::CSpiMode spi_mode(CGpio::CSpiMode::SPI_CHANNEL_MAIN,
-                             CGpio::CSpiMode::SPI_MODE_0,
-                             CGpio::CSpiMode::SPI_ACTIVE_MODE_LOW,
-                             CGpio::CSpiMode::SPI_ACTIVE_MODE_LOW,
-                             CGpio::CSpiMode::SPI_CLOCK_4M);
-    instance->SetSPI(&spi_mode);
-}
-
-/**
  * @brief Start sequence to read data or coefficient from the device by setting CE(Chip sElection) pin
  *        to low to activate SPI communication.
  */

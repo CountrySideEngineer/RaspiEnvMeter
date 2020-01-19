@@ -11,7 +11,6 @@ public:
     virtual void Update(int32_t /* State */) override;
     virtual void Update() override;
     virtual void UpdateCoeff();
-    virtual void Initialize() override;
 
     virtual float GetFloat() override { return this->press_; }
 
