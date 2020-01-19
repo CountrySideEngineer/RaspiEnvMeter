@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <list>
 #include <vector>
+#include <time.h>
 #include <QObject>
 #include <QtDebug>
 #include "pigpio/pigpio.h"
@@ -585,6 +586,18 @@ int CGpio::SpiWrite(uint8_t *data, uint dataSize)
 }
 
 /**
+ * @brief Setup pullup and down of PIN mode.
+ * @param pin   The GPIO pin number to change and mode level.
+ * @param mode  Pin mode, pull up, down, or clear.
+ * @return  Returns 0 if finish successfully, otherwise not 0.
+ */
+int CGpio::SetPullUpDownMode(const unsigned int pin, const unsigned int mode)
+{
+    return  gpioSetPullUpDown(pin, mode);
+}
+
+
+/**
  * @brief CGpio::Ce2Pin     Convert CE No.(from 0 to 1 in Main, 0 to 2 in AUX) into GPIO pin No.
  * @param ce                CE No. to be converted.
  * @return  GPIO pin No.. If an error occurred, the value is -1.
@@ -669,9 +682,52 @@ int CGpio::GpioRead(uint8_t pin, uint8_t *level)
     return readResult;
 }
 
+/**
+ * @brief Wait for time till the time specified by argument micro_sec passed.
+ * @param 0 means relative, 1 means absolute, and others are invalid.
+ * @param second    Time to wait in second.
+ * @param micro_sec Time to wait in micro second.
+ * @return  Returns 0 if OK, otherwise returns none 0 value.
+ */
 int CGpio::GpioSleep(const uint mode, const int second, const int micro_sec)
 {
     return  gpioSleep(mode, second, micro_sec);
+}
+
+/**
+ * @brief Wait for time till the time specified by argument micro_sec passed.
+ * @param micro_sec Time to wait in micro second unit.
+ * @return  Actual passed time.
+ * @attention   If the time to wait is more than 100 micro sec, use GpioSleep
+ *              instead of GpioDelay.
+ */
+uint32_t CGpio::GpioDelay(const uint32_t micro_sec)
+{
+    timespec start_time = { 0 };
+    clock_gettime(CLOCK_REALTIME, &start_time);
+
+    uint32_t passed_time = 0;
+    while (passed_time < micro_sec) {
+        timespec cur_time = { 0 };
+        clock_gettime(CLOCK_REALTIME, &cur_time);
+
+        if (cur_time.tv_nsec < start_time.tv_nsec) {
+            passed_time = cur_time.tv_nsec + (10000 * 1000 * 1000) - start_time.tv_nsec;
+        } else {
+            passed_time = cur_time.tv_nsec - start_time.tv_nsec;
+        }
+        passed_time /= 1000;    //Convert unit of time from nano sec to milli sec.
+    }
+    return passed_time;
+}
+
+/**
+ * @brief Get current time based on system tick.
+ * @return  The tick micro second since the system boot.
+ */
+uint32_t CGpio::GetCurrentTime()
+{
+    return gpioTick();
 }
 
 /**
