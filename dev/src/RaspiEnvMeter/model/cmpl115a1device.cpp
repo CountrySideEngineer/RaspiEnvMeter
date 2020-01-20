@@ -64,6 +64,14 @@ CMPL115A1Device::~CMPL115A1Device()
 }
 
 /**
+ * @brief Initialize the device.
+ */
+void CMPL115A1Device::Initialize()
+{
+    this->InitializeSpi();
+}
+
+/**
  * @brief Start sequence to read data or coefficient from the device by setting CE(Chip sElection) pin
  *        to low to activate SPI communication.
  */

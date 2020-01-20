@@ -12,6 +12,8 @@ public:
     virtual void Update() override;
     virtual void UpdateCoeff();
 
+    virtual void Initialize() override;
+
     virtual float GetFloat() override { return this->press_; }
 
 protected:
