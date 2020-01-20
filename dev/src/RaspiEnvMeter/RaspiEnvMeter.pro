@@ -27,6 +27,7 @@ SOURCES += \
     model/cpressuremodel.cpp \
     model/craspienvmetermodelbase.cpp \
     model/cgpio.cpp \
+    model/ctemperaturemodel.cpp \
     util/util.cpp \
     view/craspienvmetertimeview.cpp \
     view/craspienvmeterview.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     model/cmpl115a1device.h \
     model/cpressuremodel.h \
     model/craspienvmetermodelbase.h \
+    model/ctemperaturemodel.h \
     model/gpio_pin_layout.h \
     model/cgpio.h \
     util/util.h \
