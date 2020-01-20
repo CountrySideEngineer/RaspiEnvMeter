@@ -24,6 +24,10 @@ public:
 
     virtual void Update(int32_t /* State */) override;
     virtual void Update() override;
+    virtual int32_t GetTemperature() { return this->temperature_;}
+    virtual int32_t GetTemperature_Integer();
+    virtual uint32_t GetTemperature_Decimal();
+    virtual uint32_t GetHumidity() { return  this->humidity_; }
 
 protected:
     virtual int Read();
@@ -33,6 +37,7 @@ protected:
     virtual unsigned int WaitForPulse(const unsigned int level, const unsigned int time);
     virtual bool ValidateCheckSum();
     template<typename T> T MilliToMicro(T milli_sec);
+    virtual void UpdateValues();
 
 protected:
     enum {
@@ -56,6 +61,8 @@ protected:
 
 protected:
     uint32_t current_time_;
+    int32_t temperature_;
+    uint32_t humidity_;
 
 };
 

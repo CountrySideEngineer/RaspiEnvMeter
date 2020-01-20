@@ -1,3 +1,4 @@
+#include <math.h>
 #include "cdht11device.h"
 #include "model/cgpio.h"
 
@@ -202,3 +203,40 @@ bool CDHT11Device::ValidateCheckSum()
         return false;
     }
 }
+
+void CDHT11Device::UpdateValues()
+{
+    this->temperature_ = (int32_t)((uint16_t)(this->data_buffer_[DATA_BUFF_INDEX_T_HIGH] & 0x07) << 8) +
+                        this->data_buffer_[DATA_BUFF_INDEX_T_LOW];
+    if (0 != (this->data_buffer_[DATA_BUFF_INDEX_T_HIGH] & 0x80)) {
+        /*
+         * If the MSB, sign bit is 1, ti mean that the temperature is minus.
+         * To set the value minus, multiple temppeature_ by minus one.
+         */
+        this->temperature_ *= (-1);
+    } else {
+        /*
+         * Temperature is over 0.
+         * So nothing to do.
+         */
+    }
+}
+
+/**
+ * @brief Returns the integer part of temperature.
+ * @return  Integer part of temperature.
+ */
+int32_t CDHT11Device::GetTemperature_Integer()
+{
+    return (int32_t)(this->temperature_ / 256);
+}
+
+/**
+ * @brief Returns the decimal part of temperature.
+ * @return  Decimal part of temperature.
+ */
+uint32_t CDHT11Device::GetTemperature_Decimal()
+{
+    return (uint32_t)(abs(this->temperature_ % 256));
+}
+
