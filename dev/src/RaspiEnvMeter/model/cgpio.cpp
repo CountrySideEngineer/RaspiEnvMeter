@@ -703,16 +703,16 @@ int CGpio::GpioSleep(const uint mode, const int second, const int micro_sec)
  */
 uint32_t CGpio::GpioDelay(const uint32_t micro_sec)
 {
-    timespec start_time = { 0 };
+    timespec start_time = { .tv_sec = 0, .tv_nsec = 0 };
     clock_gettime(CLOCK_REALTIME, &start_time);
 
     uint32_t passed_time = 0;
     while (passed_time < micro_sec) {
-        timespec cur_time = { 0 };
+        timespec cur_time = { .tv_sec = 0, .tv_nsec = 0 };
         clock_gettime(CLOCK_REALTIME, &cur_time);
 
         if (cur_time.tv_nsec < start_time.tv_nsec) {
-            passed_time = cur_time.tv_nsec + (10000 * 1000 * 1000) - start_time.tv_nsec;
+            passed_time = cur_time.tv_nsec + ((1000 * 1000 * 1000) - start_time.tv_nsec);
         } else {
             passed_time = cur_time.tv_nsec - start_time.tv_nsec;
         }

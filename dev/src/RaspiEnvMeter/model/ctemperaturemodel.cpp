@@ -7,10 +7,10 @@
  * @brief Constructor of CTemperatureModel.
  * @param parent    Pointer to parent.
  */
-CTemperatureModel::CTemperatureModel(QObject* parent) : CRaspiEnvMeterModelBase (parent)
+CTemperatureModel::CTemperatureModel(QObject* parent)
+    : CRaspiEnvMeterModelBase(parent)
 {
-    this->device_ = new CDHT11Device();
-    this->device_->SetPin(DHT11_PIN);   //Use GPIO
+    this->device_ = new CDHT11Device(DHT11_PIN, APart::PART_PIN_DIRECTION_OUTPUT);
     this->device_->Initialize();
     this->device_->Update();
 }
@@ -40,12 +40,14 @@ int CTemperatureModel::rowCount(const QModelIndex &parent) const
  */
 void CTemperatureModel::Update()
 {
+    printf("void CTemperatureModel::Update() called\r\n");
+
     assert(nullptr != this->device_);
 
     this->device_->Update();
 
-    int32_t temperature_int_part = this->device_->GetTemperature_Integer();
-    uint32_t temperature_dec_part = this->device_->GetTemperature_Decimal();
+    int16_t temperature_int_part = this->device_->GetTemperature_Integer();
+    int16_t temperature_dec_part = this->device_->GetTemperature_Decimal();
     uint32_t humidity = this->device_->GetHumidity();
 
     CRaspiEnvMeterModelBase::Update(MODEL_ROW_INDEX_TEMPERATURE_INTEGER_PART, 0, temperature_int_part);

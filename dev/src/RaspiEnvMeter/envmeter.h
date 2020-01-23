@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "model/cdatetimemodel.h"
 #include "model/cpressuremodel.h"
+#include "model/ctemperaturemodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class EnvMeter; }
@@ -28,5 +29,6 @@ private:
     QTimer* timer_10sec_;
     CDateTimeModel* date_time_model_;
     CPressureModel* pressure_model_;
+    CTemperatureModel* temperature_model_;
 };
 #endif // ENVMETER_H

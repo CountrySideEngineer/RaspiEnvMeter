@@ -11,6 +11,16 @@ ADeviceBase::ADeviceBase()
 {}
 
 /**
+ * @brief Constructor of ADeviceBase
+ * @param pin   Pin number the device uses.
+ * @param mode  Direction of pin, input or output.
+ */
+ADeviceBase::ADeviceBase(uint8_t pin, uint8_t mode)
+    : APart(pin, mode)
+{}
+
+
+/**
  * @brief Setup pin and mode.
  * @param pin   GPIO pin number
  * @param mode  GPIO pin direction, the value 1 means input, 2 means output, and other means invalid.

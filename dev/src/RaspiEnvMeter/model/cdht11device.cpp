@@ -2,7 +2,7 @@
 #include "cdht11device.h"
 #include "model/cgpio.h"
 
-const unsigned int CDHT11Device::WAIT_TIME_START_SIGNAL_LOW = 20;    //20 milli sec
+const unsigned int CDHT11Device::WAIT_TIME_START_SIGNAL_LOW = 18;    //20 milli sec
 const unsigned int CDHT11Device::WAIT_TIME_START_SIGNAL_HIGH = 80;   //80 milli sec
 const unsigned int CDHT11Device::SENSOR_READY_TO_OUTPUT_SIGNAL = 80;
 const unsigned int CDHT11Device::WAIT_TIME_TO_CHANGE_LOW_BIT = 50;
@@ -18,6 +18,22 @@ const unsigned int CDHT11Device::DATA_BUFF_DATA_PART_SIZE = 4;
 CDHT11Device::CDHT11Device()
     : current_time_(0)
 {
+    this->data_buffer_size_ = DATA_BUFF_INDEX_MAX;
+    this->data_buffer_ = new uint8_t[this->data_buffer_size_];
+    this->InitBuffer();
+    this->Initialize();
+}
+
+/**
+ * @brief Constructor of CDHT11Device.
+ * @param pin   Pin number the device uses.
+ * @param mode  Pin direciont input or output.
+ */
+CDHT11Device::CDHT11Device(uint8_t pin, uint8_t mode)
+    : current_time_(0)
+{
+    this->SetupPin(pin, mode);
+
     this->data_buffer_size_ = DATA_BUFF_INDEX_MAX;
     this->data_buffer_ = new uint8_t[this->data_buffer_size_];
     this->InitBuffer();
@@ -53,11 +69,19 @@ void CDHT11Device::Update()
 int CDHT11Device::Read()
 {
     if (this->IsScanIntervalPassed()) {
-        this->ReadSequence();
-    }
-    this->UpdateInterval();
+        int sequence_result = this->ReadSequence();
+        printf("Read sequence = %d\n", sequence_result);
+        if (0 == sequence_result) {
+            this->UpdateValues();
+        }
+        this->UpdateInterval();
 
-    return 0;
+        this->ShowBuffer();
+
+        return 0;
+    } else {
+        return  (-1);
+    }
 }
 
 /**
@@ -66,6 +90,8 @@ int CDHT11Device::Read()
  */
 int CDHT11Device::ReadSequence()
 {
+    printf("int CDHT11Device::ReadSequence() start!\r\n");
+
     uint32_t recv_raw_data_buff[80] = { 0 };
     CGpio* instance = CGpio::GetInstance();
 
@@ -73,16 +99,19 @@ int CDHT11Device::ReadSequence()
     instance->SetMode(this->GetPin(), CGpio::GPIO_PIN_DIRECTION_OUTPUT);
     instance->SetPullUpDownMode(this->GetPin(), CGpio::GPIO_PULL_UP_DOWN_OFF);
     instance->GpioWrite(this->GetPin(), CGpio::GPIO_PIN_LEVEL_LOW);
-    instance->GpioSleep(0, 0, WAIT_TIME_START_SIGNAL_LOW);
+    instance->GpioSleep(0, 0, this->MilliToMicro((const int)WAIT_TIME_START_SIGNAL_LOW));
 
     //Step2:Waiting for response signal by settin GPIO pin pulled up.
     instance->SetMode(this->GetPin(), CGpio::GPIO_PIN_DIRECTION_INPUT);
     instance->SetPullUpDownMode(this->GetPin(), CGpio::GPIO_PULL_UP_DOWN_UP);
+
     this->WaitForPulse(CGpio::GPIO_PIN_LEVEL_LOW, this->MilliToMicro(WAIT_TIME_START_SIGNAL_HIGH));
     if (WAIT_SIGNAL_TIME_OUT == this->WaitForPulse(
                 CGpio::GPIO_PIN_LEVEL_HIGH,
                 WAIT_TIME_START_SIGNAL_HIGH))
     {
+        printf("int CDHT11Device::ReadSequence() - Step2 pulse time out\r\n");
+
         return DATA_RESULT_PULLED_UP_TIMEOUT;
     }
 
@@ -94,12 +123,16 @@ int CDHT11Device::ReadSequence()
                 CGpio::GPIO_PIN_LEVEL_LOW,
                 SENSOR_READY_TO_OUTPUT_SIGNAL))
     {
+        printf("int CDHT11Device::ReadSequence() - Step3-1 pulse time out\r\n");
+
         return DATA_RESULT_SENSOR_PULL_UP_LOW_TIMEOUT;
     }
     if (WAIT_SIGNAL_TIME_OUT == this->WaitForPulse(
                 CGpio::GPIO_PIN_LEVEL_HIGH,
                 SENSOR_READY_TO_OUTPUT_SIGNAL))
     {
+        printf("int CDHT11Device::ReadSequence() - Step3-2 pulse time out\r\n");
+
         return DATA_RESULT_SENSOR_PULL_UP_HIGH_TIMEOUT;
     }
 
@@ -121,6 +154,7 @@ int CDHT11Device::ReadSequence()
         if ((WAIT_SIGNAL_TIME_OUT == start_bit_time) ||
             (WAIT_SIGNAL_TIME_OUT == follow_bit_time))
         {
+            printf("int CDHT11Device::ReadSequence() - Step5 pulse time out\r\n");
             return DATA_RESULT_SENSOR_READ_DATA_TIMEOUT;
         }
         this->data_buffer_[index / 8] <<= 1;
@@ -131,8 +165,10 @@ int CDHT11Device::ReadSequence()
 
     //Step6:Validate receive data by checking sum.
     if (!this->ValidateCheckSum()) {
+        printf("int CDHT11Device::ReadSequence() - Received data invalid.\r\n");
         return DATA_RESULT_SENSOR_READ_DATA_INVALID;
     } else {
+        printf("int CDHT11Device::ReadSequence() succeeded!\r\n");
         return DATA_RESULT_OK;
     }
 }
@@ -156,7 +192,7 @@ uint32_t CDHT11Device::WaitForPulse(const unsigned int level, const unsigned int
             return WAIT_SIGNAL_TIME_OUT;
         }
         instance->GpioRead(this->GetPin(), &read_level);
-        instance->GpioDelay(1);
+        passed_time += instance->GpioDelay(1);
 
     }
     return passed_time;
@@ -172,7 +208,7 @@ bool CDHT11Device::IsScanIntervalPassed()
     bool is_passed = false;
     CGpio* instance = CGpio::GetInstance();
     uint32_t current_time = instance->GetCurrentTime();
-    if (SENSOR_READ_INTERVAL < current_time - this->current_time_) {
+    if (SENSOR_READ_INTERVAL < (current_time - this->current_time_)) {
         is_passed  = true;
     } else {
         is_passed = false;
@@ -206,7 +242,7 @@ bool CDHT11Device::ValidateCheckSum()
 
 void CDHT11Device::UpdateValues()
 {
-    this->temperature_ = (int32_t)((uint16_t)(this->data_buffer_[DATA_BUFF_INDEX_T_HIGH] & 0x07) << 8) +
+    this->temperature_ = (int16_t)((uint16_t)(this->data_buffer_[DATA_BUFF_INDEX_T_HIGH] & 0x7F) << 8) +
                         this->data_buffer_[DATA_BUFF_INDEX_T_LOW];
     if (0 != (this->data_buffer_[DATA_BUFF_INDEX_T_HIGH] & 0x80)) {
         /*
@@ -226,17 +262,26 @@ void CDHT11Device::UpdateValues()
  * @brief Returns the integer part of temperature.
  * @return  Integer part of temperature.
  */
-int32_t CDHT11Device::GetTemperature_Integer()
+int16_t CDHT11Device::GetTemperature_Integer()
 {
-    return (int32_t)(this->temperature_ / 256);
+    int16_t int_part = this->temperature_ / 256;
+
+    printf("temperature integer part = %d\n", int_part);
+
+    return int_part;
 }
 
 /**
  * @brief Returns the decimal part of temperature.
  * @return  Decimal part of temperature.
  */
-uint32_t CDHT11Device::GetTemperature_Decimal()
+int16_t CDHT11Device::GetTemperature_Decimal()
 {
-    return (uint32_t)(abs(this->temperature_ % 256));
+    int abs_value = abs((int)this->temperature_);
+    int16_t dec_part = abs_value  % 256;
+
+    printf("temperature decimal part = %d\n", dec_part);
+
+    return dec_part;
 }
 

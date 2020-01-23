@@ -20,14 +20,15 @@ public:
     
 public:
     CDHT11Device();
+    CDHT11Device(uint8_t pin, uint8_t mode);
     virtual ~CDHT11Device() override;
 
     virtual void Update(int32_t /* State */) override;
     virtual void Update() override;
-    virtual int32_t GetTemperature() { return this->temperature_;}
-    virtual int32_t GetTemperature_Integer();
-    virtual uint32_t GetTemperature_Decimal();
-    virtual uint32_t GetHumidity() { return  this->humidity_; }
+    virtual int16_t GetTemperature() { return this->temperature_;}
+    virtual int16_t GetTemperature_Integer();
+    virtual int16_t GetTemperature_Decimal();
+    virtual uint16_t GetHumidity() { return  this->humidity_; }
 
 protected:
     virtual int Read();
@@ -61,8 +62,8 @@ protected:
 
 protected:
     uint32_t current_time_;
-    int32_t temperature_;
-    uint32_t humidity_;
+    int16_t temperature_;
+    uint16_t humidity_;
 
 };
 
