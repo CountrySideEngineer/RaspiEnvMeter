@@ -1,4 +1,5 @@
 #include "adevicebase.h"
+#include "model/gpio_pin_layout.h"
 
 /**
  * @brief   Default constructor of ADeviceBase class.
@@ -8,6 +9,16 @@ ADeviceBase::ADeviceBase()
     , decimal_part_(0)
     , integer_part_(0)
 {}
+
+/**
+ * @brief Constructor of ADeviceBase
+ * @param pin   Pin number the device uses.
+ * @param mode  Direction of pin, input or output.
+ */
+ADeviceBase::ADeviceBase(uint8_t pin, uint8_t mode)
+    : APart(pin, mode)
+{}
+
 
 /**
  * @brief Setup pin and mode.
@@ -40,6 +51,26 @@ void ADeviceBase::ShowBuffer()
         printf("0x%02x", this->data_buffer_[index]);
     }
     printf("\r\n");
+}
+
+/**
+ * @brief Initialize and setup SPI configuration.
+ */
+void ADeviceBase::InitializeSpi()
+{
+    CGpio* instance = CGpio::GetInstance();
+    instance->SetMode(SPI_0_CE0_N, CGpio::GPIO_PIN_DIRECTION::GPIO_PIN_DIRECTION_OUTPUT);
+    instance->SetMode(SPI_0_CE1_N, CGpio::GPIO_PIN_DIRECTION::GPIO_PIN_DIRECTION_OUTPUT);
+
+    this->SetOutputPin(SPI_0_CE0_N);
+    this->SetOutputPin(SPI_0_CE1_N);
+
+    CGpio::CSpiMode spi_mode(CGpio::CSpiMode::SPI_CHANNEL_MAIN,
+                             CGpio::CSpiMode::SPI_MODE_0,
+                             CGpio::CSpiMode::SPI_ACTIVE_MODE_LOW,
+                             CGpio::CSpiMode::SPI_ACTIVE_MODE_LOW,
+                             CGpio::CSpiMode::SPI_CLOCK_4M);
+    instance->SetSPI(&spi_mode);
 }
 
 /**

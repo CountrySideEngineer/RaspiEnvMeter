@@ -21,6 +21,8 @@ EnvMeter::EnvMeter(QWidget *parent)
     this->ui->DateMonthDisplay->SetModelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_MONTH_OF_YEAR);
     this->ui->DateDayDisplay->SetModelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_DAY_OF_MONTH);
     this->ui->PressDisplay->SetModelRowIndex(CPressureModel::PRESSURE_MODE_ROW_INDEX_PRESSURE);
+    this->ui->TempIntPartDisplay->SetModelRowIndex(CTemperatureModel::MODEL_ROW_INDEX_TEMPERATURE_INTEGER_PART);
+    this->ui->TempDecPartDisplay->SetModelRowIndex(CTemperatureModel::MODEL_ROW_INDEX_TEMPERATURE_DECIMAL_PART);
 
     this->date_time_model_ = new CDateTimeModel(this);
     this->ui->AmPmDisplay->setModel(this->date_time_model_);
@@ -33,6 +35,10 @@ EnvMeter::EnvMeter(QWidget *parent)
     this->pressure_model_ = new CPressureModel(this);
     this->ui->PressDisplay->setModel(this->pressure_model_);
 
+    this->temperature_model_ = new CTemperatureModel(this);
+    this->ui->TempIntPartDisplay->setModel(this->temperature_model_);
+    this->ui->TempDecPartDisplay->setModel(this->temperature_model_);
+
     //@Todo:Add code to change view size.
 
     //Setup timer dispatch each 100msec.
@@ -40,7 +46,7 @@ EnvMeter::EnvMeter(QWidget *parent)
     this->timer_100ms_->setSingleShot(false);
     connect(this->timer_100ms_, SIGNAL(timeout()), this, SLOT(onTimerDispatch_100msec()));
 
-    this->timer_10sec_->setInterval(10 * 1000); //10 second.
+    this->timer_10sec_->setInterval(4 * 1000); //10 second.
     this->timer_10sec_->setSingleShot(false);
     connect(this->timer_10sec_, SIGNAL(timeout()), this, SLOT(onTimerDispatch_10sec()));
 
@@ -76,5 +82,6 @@ void EnvMeter::onTimerDispatch_100msec()
 void EnvMeter::onTimerDispatch_10sec()
 {
     this->pressure_model_->Update();
+    this->temperature_model_->Update();
 }
 
