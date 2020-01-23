@@ -137,6 +137,12 @@ public:
         GPIO_PIN_LEVEL_HIGH,
         GPIO_PIN_LEVEL_MAX,
     };
+    enum {
+        GPIO_PULL_UP_DOWN_OFF = 0,
+        GPIO_PULL_UP_DOWN_DOWN,
+        GPIO_PULL_UP_DOWN_UP,
+        GPIO_PULL_UP_DOWN_MAX,
+    };
 
 protected:
     CGpio();
@@ -171,7 +177,10 @@ public:
     int GpioWrite(uint8_t pin, uint8_t level);
     int GpioRead(uint8_t pin, uint8_t* level);
     int GpioSleep(const uint mode, const int second, const int micro_sec);
+    uint32_t GpioDelay(const uint32_t micro_sec);
+    uint32_t GetCurrentTime();
 
+    int SetPullUpDownMode(const unsigned int pin, const unsigned int mode);
 
     bool GetInCritical() const { return this->mInCritical; }
     uint8_t GetInterruptPin() const { return this->mInterruptPin; }

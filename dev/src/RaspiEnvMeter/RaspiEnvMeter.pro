@@ -22,10 +22,12 @@ SOURCES += \
     model/apart.cpp \
     model/cdatetime.cpp \
     model/cdatetimemodel.cpp \
+    model/cdht11device.cpp \
     model/cmpl115a1device.cpp \
     model/cpressuremodel.cpp \
     model/craspienvmetermodelbase.cpp \
     model/cgpio.cpp \
+    model/ctemperaturemodel.cpp \
     util/util.cpp \
     view/craspienvmetertimeview.cpp \
     view/craspienvmeterview.cpp \
@@ -37,9 +39,11 @@ HEADERS += \
     model/apart.h \
     model/cdatetime.h \
     model/cdatetimemodel.h \
+    model/cdht11device.h \
     model/cmpl115a1device.h \
     model/cpressuremodel.h \
     model/craspienvmetermodelbase.h \
+    model/ctemperaturemodel.h \
     model/gpio_pin_layout.h \
     model/cgpio.h \
     util/util.h \
