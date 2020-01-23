@@ -8,6 +8,7 @@ class ADeviceBase : public APart
 {
 public:
     ADeviceBase();
+    ADeviceBase(uint8_t pin, uint8_t mode);
 
     virtual void SetupPin(const uint8_t pin, const int mode);
 
@@ -22,6 +23,7 @@ public:
 
 
 protected:
+    virtual void InitializeSpi();
     virtual void InitBuffer();
 
 protected:
