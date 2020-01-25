@@ -103,8 +103,6 @@ void CMPL115A1Device::SendAndRecvCommand(const uint8_t send_data, uint8_t* recv_
 
     instance->SpiWrite(const_cast<uint8_t*>((&send_data)), 1);
     instance->SpiRead(recv_data, 1);
-
-    printf("Snd = 0x%02x Rcv = 0x%02x\r\n", send_data, *recv_data);
 }
 
 /**
@@ -166,12 +164,6 @@ void CMPL115A1Device::CalcCoeff()
     this->coefficient_c12_ = Util::Buff2Float(
                 this->data_buffer_,
                 COEFF_BUFF_INDEX_C12_MSB, COEFF_BUFF_INDEX_C12_LSB, LSB_C12);
-
-    printf("coefficient_a0_= %.3f\r\n", (double)this->coefficient_a0_);
-    printf("coefficient_b1_= %.3f\r\n", (double)this->coefficient_b1_);
-    printf("coefficient_b2_= %.3f\r\n", (double)this->coefficient_b2_);
-    printf("coefficient_c12_= %.3f\r\n", (double)this->coefficient_c12_);
-
 }
 
 /**
@@ -196,12 +188,24 @@ void CMPL115A1Device::CalcPress()
 }
 
 /**
+ * @brief Show coefficient used to calculate pressure.
+ */
+void CMPL115A1Device::ShowCoefficient()
+{
+    printf("coefficient_a0_= %.3f\r\n", (double)this->coefficient_a0_);
+    printf("coefficient_b1_= %.3f\r\n", (double)this->coefficient_b1_);
+    printf("coefficient_b2_= %.3f\r\n", (double)this->coefficient_b2_);
+    printf("coefficient_c12_= %.3f\r\n", (double)this->coefficient_c12_);
+}
+
+/**
  * @brief Run sequence to read and update coefficient.
  */
 void CMPL115A1Device::UpdateCoeff()
 {
     this->ReadCoefficientData();
     this->CalcCoeff();
+    this->ShowCoefficient();
 }
 
 /**
@@ -223,6 +227,8 @@ void CMPL115A1Device::Update(void)
 
     this->SendStartReadingComand();
     this->ReadSensorData();
+
+    this->ShowBuffer();
 
     this->CalcPress();
 }
