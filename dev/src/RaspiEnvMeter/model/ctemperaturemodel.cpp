@@ -50,7 +50,11 @@ void CTemperatureModel::Update()
     int16_t temperature_dec_part = this->device_->GetTemperature_Decimal();
     uint32_t humidity = this->device_->GetHumidity();
 
-    CRaspiEnvMeterModelBase::Update(MODEL_ROW_INDEX_TEMPERATURE_INTEGER_PART, 0, temperature_int_part);
-    CRaspiEnvMeterModelBase::Update(MODEL_ROW_INDEX_TEMPERATURE_DECIMAL_PART, 0, temperature_dec_part);
+    CRaspiEnvMeterModelBase::Update(
+                MODEL_ROW_INDEX_TEMPERATURE_PART, MODEL_COL_INDEX_TEMPERATURE_INT_PART,
+                temperature_int_part);
+    CRaspiEnvMeterModelBase::Update(
+                MODEL_ROW_INDEX_TEMPERATURE_PART, MODEL_COL_INDEX_TEMPERATURE_DEC_PART,
+                temperature_dec_part);
     CRaspiEnvMeterModelBase::Update(MODEL_ROW_INDEX_HUMIDITY, 0 , humidity);
 }

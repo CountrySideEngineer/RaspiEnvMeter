@@ -19,6 +19,8 @@ public:
 
     void SetModelRowIndex(int value) { this->model_row_index_ = value; }
     int GetModelrowIndex() { return this->model_row_index_; }
+    void SetModelColIndex(int value) { this->model_col_index_ = value; }
+    int GetModelColIndex() { return this->model_col_index_; }
 
 protected slots:
     void dataChanged(const QModelIndex &topLeft,
@@ -35,6 +37,7 @@ protected:
 
 protected:
     int model_row_index_;
+    int model_col_index_;
 
     QLabel* item_view_;
 };
