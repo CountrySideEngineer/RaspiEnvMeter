@@ -29,6 +29,8 @@ protected:
     virtual void CalcCoeff();
     virtual void CalcPress();
 
+    virtual void ShowCoefficient();
+
 protected:
     enum {
         COEFF_BUFF_INDEX_A0_MSB = 0,
