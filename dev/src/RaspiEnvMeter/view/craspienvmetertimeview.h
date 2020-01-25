@@ -15,7 +15,6 @@ protected slots:
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
-
 };
 
 #endif // CRASPIENVMETERTIMEVIEW_H
