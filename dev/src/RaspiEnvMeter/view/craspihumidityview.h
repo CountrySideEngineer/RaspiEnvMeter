@@ -1,12 +1,12 @@
-#ifndef CRASPIENVMETERTIMEVIEW_H
-#define CRASPIENVMETERTIMEVIEW_H
+#ifndef CRASPIHUMIDITYVIEW_H
+#define CRASPIHUMIDITYVIEW_H
+#include "view/craspienvmeterview.h"
 
-#include "craspienvmeterview.h"
 
-class CRaspiEnvMeterTimeView : public CRaspiEnvMeterView
+class CRaspiHumidityView : public CRaspiEnvMeterView
 {
 public:
-    explicit CRaspiEnvMeterTimeView(QWidget* parent = nullptr);
+    explicit CRaspiHumidityView(QWidget* parent = nullptr);
 
 protected slots:
     void dataChanged(const QModelIndex &topLeft,
@@ -15,6 +15,9 @@ protected slots:
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
+
+protected:
+    int humidity_;
 };
 
-#endif // CRASPIENVMETERTIMEVIEW_H
+#endif // CRASPIHUMIDITYVIEW_H

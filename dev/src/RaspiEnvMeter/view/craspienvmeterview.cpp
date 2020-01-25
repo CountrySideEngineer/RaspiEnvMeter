@@ -8,6 +8,7 @@
 CRaspiEnvMeterView::CRaspiEnvMeterView(QWidget* parent)
     : QAbstractItemView(parent)
     , model_row_index_(-1)
+    , model_col_index_(-1)
     , item_view_(nullptr)
 {}
 
