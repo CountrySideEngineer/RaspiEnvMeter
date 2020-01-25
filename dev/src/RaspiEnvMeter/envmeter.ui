@@ -496,7 +496,7 @@
              <enum>QFrame::Box</enum>
             </property>
             <property name="text">
-             <string>Lux</string>
+             <string>%</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -504,34 +504,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="EnvLuxDisplay">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>50</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>24</pointsize>
-             </font>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::Box</enum>
-            </property>
-            <property name="text">
-             <string>1234</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
+           <widget class="CRaspiHumidityView" name="HumidityDisplay" native="true"/>
           </item>
          </layout>
         </item>
@@ -553,6 +526,12 @@
    <class>CRaspiTemperatureView</class>
    <extends>QWidget</extends>
    <header>craspitemperatureview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CRaspiHumidityView</class>
+   <extends>QWidget</extends>
+   <header location="global">craspihumidityview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
