@@ -242,6 +242,7 @@ bool CDHT11Device::ValidateCheckSum()
 
 void CDHT11Device::UpdateValues()
 {
+    //Update temperature value.
     this->temperature_ = (int16_t)((uint16_t)(this->data_buffer_[DATA_BUFF_INDEX_T_HIGH] & 0x7F) << 8) +
                         this->data_buffer_[DATA_BUFF_INDEX_T_LOW];
     if (0 != (this->data_buffer_[DATA_BUFF_INDEX_T_HIGH] & 0x80)) {
@@ -256,6 +257,15 @@ void CDHT11Device::UpdateValues()
          * So nothing to do.
          */
     }
+
+    /*
+     * Update humidity value.
+     * The data is 16 bit, 2 byte data, size.
+     * The upper part means integer part, and lower part means decimal part,
+     * and in this function and class return onyl integer part.
+     * So this function calcurate only the upper data and ignore lower part.
+     */
+    this->humidity_ = (uint16_t)(this->data_buffer_[DATA_BUFF_INDEX_RH_HIGH] & 0x7F);
 }
 
 /**
