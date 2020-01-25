@@ -8,12 +8,19 @@
 class CRaspiEnvMeterView : public QAbstractItemView
 {
     Q_OBJECT
+
 public:
     explicit CRaspiEnvMeterView(QWidget* parent = nullptr);
+    virtual ~CRaspiEnvMeterView() override;
 
     QRect visualRect(const QModelIndex &index) const override;
     void scrollTo(const QModelIndex &index, ScrollHint hint) override;
     QModelIndex indexAt(const QPoint &point) const override;
+
+    void SetModelRowIndex(int value) { this->model_row_index_ = value; }
+    int GetModelrowIndex() { return this->model_row_index_; }
+    void SetModelColIndex(int value) { this->model_col_index_ = value; }
+    int GetModelColIndex() { return this->model_col_index_; }
 
 protected slots:
     void dataChanged(const QModelIndex &topLeft,
@@ -30,6 +37,7 @@ protected:
 
 protected:
     int model_row_index_;
+    int model_col_index_;
 
     QLabel* item_view_;
 };

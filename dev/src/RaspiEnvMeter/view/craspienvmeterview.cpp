@@ -1,4 +1,5 @@
 #include "craspienvmeterview.h"
+#include "util/util.h"
 
 /**
  * @brief Constructor of CRaspiEnvMeterView class
@@ -7,8 +8,18 @@
 CRaspiEnvMeterView::CRaspiEnvMeterView(QWidget* parent)
     : QAbstractItemView(parent)
     , model_row_index_(-1)
+    , model_col_index_(-1)
     , item_view_(nullptr)
 {}
+
+/**
+ * @brief Destructor.
+ */
+CRaspiEnvMeterView::~CRaspiEnvMeterView()
+{
+    Util::SAFE_RELEASE_DATA(&(this->item_view_));
+}
+
 
 /**
  * @brief Returns the rectangle on the viewport occupied by the item at index.
