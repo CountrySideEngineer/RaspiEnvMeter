@@ -32,6 +32,7 @@ SOURCES += \
     view/craspienvmetertimeview.cpp \
     view/craspienvmeterview.cpp \
     view/craspienvpressview.cpp \
+    view/craspihumidityview.cpp \
     view/craspitemperatureview.cpp
 
 HEADERS += \
@@ -51,6 +52,7 @@ HEADERS += \
     view/craspienvmetertimeview.h \
     view/craspienvmeterview.h \
     view/craspienvpressview.h \
+    view/craspihumidityview.h \
     view/craspitemperatureview.h
 
 FORMS += \
