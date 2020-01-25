@@ -31,7 +31,8 @@ SOURCES += \
     util/util.cpp \
     view/craspienvmetertimeview.cpp \
     view/craspienvmeterview.cpp \
-    view/craspienvpressview.cpp
+    view/craspienvpressview.cpp \
+    view/craspitemperatureview.cpp
 
 HEADERS += \
     envmeter.h \
@@ -49,7 +50,8 @@ HEADERS += \
     util/util.h \
     view/craspienvmetertimeview.h \
     view/craspienvmeterview.h \
-    view/craspienvpressview.h
+    view/craspienvpressview.h \
+    view/craspitemperatureview.h
 
 FORMS += \
     envmeter.ui

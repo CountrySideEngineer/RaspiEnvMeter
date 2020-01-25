@@ -12,10 +12,14 @@ class CTemperatureModel : public CRaspiEnvMeterModelBase
 
 public:
     enum {
-        MODEL_ROW_INDEX_TEMPERATURE_INTEGER_PART = 0,
-        MODEL_ROW_INDEX_TEMPERATURE_DECIMAL_PART,
+        MODEL_ROW_INDEX_TEMPERATURE_PART = 0,
         MODEL_ROW_INDEX_HUMIDITY,
         MODEL_ROW_INDEX_MAX
+    };
+    enum {
+        MODEL_COL_INDEX_TEMPERATURE_INT_PART = 0,
+        MODEL_COL_INDEX_TEMPERATURE_DEC_PART,
+        MODEL_COL_INDEX_TEMPERATURE_MAX
     };
 
 public:

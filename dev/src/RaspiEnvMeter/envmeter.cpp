@@ -21,8 +21,7 @@ EnvMeter::EnvMeter(QWidget *parent)
     this->ui->DateMonthDisplay->SetModelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_MONTH_OF_YEAR);
     this->ui->DateDayDisplay->SetModelRowIndex(CDateTimeModel::DATE_TIME_MODEL_ROW_INDEX_DAY_OF_MONTH);
     this->ui->PressDisplay->SetModelRowIndex(CPressureModel::PRESSURE_MODE_ROW_INDEX_PRESSURE);
-    this->ui->TempIntPartDisplay->SetModelRowIndex(CTemperatureModel::MODEL_ROW_INDEX_TEMPERATURE_INTEGER_PART);
-    this->ui->TempDecPartDisplay->SetModelRowIndex(CTemperatureModel::MODEL_ROW_INDEX_TEMPERATURE_DECIMAL_PART);
+    this->ui->TemperatureDisplay->SetModelRowIndex(CTemperatureModel::MODEL_ROW_INDEX_TEMPERATURE_PART);
 
     this->date_time_model_ = new CDateTimeModel(this);
     this->ui->AmPmDisplay->setModel(this->date_time_model_);
@@ -36,8 +35,7 @@ EnvMeter::EnvMeter(QWidget *parent)
     this->ui->PressDisplay->setModel(this->pressure_model_);
 
     this->temperature_model_ = new CTemperatureModel(this);
-    this->ui->TempIntPartDisplay->setModel(this->temperature_model_);
-    this->ui->TempDecPartDisplay->setModel(this->temperature_model_);
+    this->ui->TemperatureDisplay->setModel(this->temperature_model_);
 
     //@Todo:Add code to change view size.
 
