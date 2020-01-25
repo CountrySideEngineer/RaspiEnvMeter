@@ -504,7 +504,13 @@
            </widget>
           </item>
           <item>
-           <widget class="CRaspiHumidityView" name="HumidityDisplay" native="true"/>
+           <widget class="CRaspiHumidityView" name="HumidityDisplay" native="true">
+            <property name="font">
+             <font>
+              <pointsize>20</pointsize>
+             </font>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
